@@ -1518,28 +1518,16 @@ namespace LiteNetLib
             _peerIds = new ConcurrentQueue<int>();
             _lastPeerId = 0;
 
-            ClearPingSimulationList();
-            ClearOutboundSimulationList();
+#if DEBUG || SIMULATE_NETWORK
+            lock (_pingSimulationList)
+                _pingSimulationList.Clear();
+            lock (_outboundSimulationList)
+                _outboundSimulationList.Clear();
+#endif
 
             _connectedPeersCount = 0;
             _pendingEventHead = null;
             _pendingEventTail = null;
-        }
-
-        private void ClearPingSimulationList()
-        {
-#if DEBUG || SIMULATE_NETWORK
-            lock (_pingSimulationList)
-                _pingSimulationList.Clear();
-#endif
-        }
-
-        private void ClearOutboundSimulationList()
-        {
-#if DEBUG || SIMULATE_NETWORK
-            lock (_outboundSimulationList)
-                _outboundSimulationList.Clear();
-#endif
         }
 
         /// <summary>
